@@ -28,7 +28,7 @@ body {
   border: 2px solid #000;
 }
 
-/* Cells */
+/* base cells */
 .cell {
   display: flex;
   flex-direction: column;
@@ -39,25 +39,24 @@ body {
   gap: 6px;
 }
 
-/* Colors */
+/* colors (restored original vibe) */
 .white { background: #f2f2f2; }
 .red   { background: #e85b4f; }
 .green { background: #6fcf97; }
 .mint  { background: #bfe6dc; }
 .peach { background: #f6b8a8; }
 
-/* Label */
+/* labels */
 .label {
   font-size: 12px;
   letter-spacing: 0.5px;
-  text-align: center;
 }
 
-/* Controls */
+/* controls */
 .controls {
   display: flex;
-  align-items: center;
   gap: 10px;
+  align-items: center;
 }
 
 button {
@@ -74,6 +73,30 @@ button {
   min-width: 40px;
   text-align: center;
 }
+
+/* ---- Creature split box ---- */
+.split {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  width: 100%;
+  height: 100%;
+}
+
+.split-half {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  border-top: 1px solid rgba(0,0,0,0.2);
+}
+
+.split-half:first-child {
+  border-top: none;
+}
+
+.green-half { background: #6fcf97; }
+.red-half   { background: #e85b4f; }
 </style>
 </head>
 
@@ -91,7 +114,7 @@ button {
     </div>
   </div>
 
-  <!-- Birgi Mana -->
+  <!-- Birgi -->
   <div class="cell peach">
     <div class="label">BIRGI MANA</div>
     <div class="controls">
@@ -121,9 +144,9 @@ button {
     </div>
   </div>
 
-  <!-- Creature Mana -->
+  <!-- Green Mana (bottom left) -->
   <div class="cell green">
-    <div class="label">CREATURE MANA</div>
+    <div class="label">GREEN MANA</div>
     <div class="controls">
       <button onclick="change('g',-1)">−</button>
       <div class="value" id="g">0</div>
@@ -131,34 +154,52 @@ button {
     </div>
   </div>
 
-  <!-- Creature / Enchantment -->
-  <div class="cell peach">
-    <div class="label">CREATURE / ENCHANT</div>
-    <div class="controls">
-      <button onclick="change('x',-1)">−</button>
-      <div class="value" id="x">0</div>
-      <button onclick="change('x',1)">+</button>
+  <!-- Creature Mana split box -->
+  <div class="cell" style="padding:0;">
+
+    <div class="split">
+
+      <!-- green half -->
+      <div class="split-half green-half">
+        <div class="label">CREATURE (G)</div>
+        <div class="controls">
+          <button onclick="change('cg',-1)">−</button>
+          <div class="value" id="cg">0</div>
+          <button onclick="change('cg',1)">+</button>
+        </div>
+      </div>
+
+      <!-- red half -->
+      <div class="split-half red-half">
+        <div class="label">CREATURE (R)</div>
+        <div class="controls">
+          <button onclick="change('cr',-1)">−</button>
+          <div class="value" id="cr">0</div>
+          <button onclick="change('cr',1)">+</button>
+        </div>
+      </div>
+
     </div>
+
   </div>
 
 </div>
 
 <script>
-const keys = ["c","b","r","t","g","x"];
+const keys = ["c","b","r","t","g","cg","cr"];
 
 function load() {
   keys.forEach(k => {
-    const v = localStorage.getItem(k) || 0;
-    document.getElementById(k).innerText = v;
+    document.getElementById(k).innerText = localStorage.getItem(k) || 0;
   });
 }
 
 function change(key, delta) {
   const el = document.getElementById(key);
-  let val = parseInt(el.innerText) + delta;
-  if (val < 0) val = 0;
-  el.innerText = val;
-  localStorage.setItem(key, val);
+  let v = parseInt(el.innerText) + delta;
+  if (v < 0) v = 0;
+  el.innerText = v;
+  localStorage.setItem(key, v);
 }
 
 load();
