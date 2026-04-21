@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{margin:0;background:#111;display:flex;justify-content:center;align-items:center;height:100vh;font-family:-apple-system}
+.card{width:92vw;max-width:420px;aspect-ratio:2/3;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,1fr);border-radius:18px;overflow:hidden}
+.cell{display:flex;flex-direction:column;justify-content:center;align-items:center;font-weight:bold}
+.split1{background:linear-gradient(135deg,#f2f2f2 50%,#f6b8a8 50%)}
+.split2{background:linear-gradient(135deg,#f6b8a8 50%,#bfe6dc 50%)}
+.split3{background:linear-gradient(135deg,#bfe6dc 50%,#f6b8a8 50%)}
+.controls{display:flex;gap:10px;align-items:center}
+.value{font-size:26px;min-width:40px;text-align:center}
+button{width:36px;height:36px;border:none;border-radius:8px;font-size:20px;background:rgba(0,0,0,.2)}
+</style>
+</head>
+<body>
+
+<div class="card">
+<div class="cell split1"><div>◇</div><div class="controls"><button onclick="c('c',-1)">−</button><div id="c" class="value">0</div><button onclick="c('c',1)">+</button></div></div>
+<div class="cell split2"><div>BIRGI</div><div class="controls"><button onclick="c('b',-1)">−</button><div id="b" class="value">0</div><button onclick="c('b',1)">+</button></div></div>
+<div class="cell split2"><div>🔥</div><div class="controls"><button onclick="c('r',-1)">−</button><div id="r" class="value">0</div><button onclick="c('r',1)">+</button></div></div>
+<div class="cell split3"><div>TAX</div><div class="controls"><button onclick="c('t',-1)">−</button><div id="t" class="value">0</div><button onclick="c('t',1)">+</button></div></div>
+<div class="cell split3"><div>🌳</div><div class="controls"><button onclick="c('g',-1)">−</button><div id="g" class="value">0</div><button onclick="c('g',1)">+</button></div></div>
+<div class="cell split2"><div>CREATURE</div><div class="controls"><button onclick="c('x',-1)">−</button><div id="x" class="value">0</div><button onclick="c('x',1)">+</button></div></div>
+</div>
+
+<script>
+let k=['c','b','r','t','g','x'];
+k.forEach(i=>{let v=localStorage.getItem(i)||0;document.getElementById(i).innerText=v});
+function c(id,d){let e=document.getElementById(id);let v=parseInt(e.innerText)+d;if(v<0)v=0;e.innerText=v;localStorage.setItem(id,v)}
+</script>
+
+</body>
+</html>
