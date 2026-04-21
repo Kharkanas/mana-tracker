@@ -1,34 +1,167 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MTG Tracker</title>
+
 <style>
-body{margin:0;background:#111;display:flex;justify-content:center;align-items:center;height:100vh;font-family:-apple-system}
-.card{width:92vw;max-width:420px;aspect-ratio:2/3;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,1fr);border-radius:18px;overflow:hidden}
-.cell{display:flex;flex-direction:column;justify-content:center;align-items:center;font-weight:bold}
-.split1{background:linear-gradient(135deg,#f2f2f2 50%,#f6b8a8 50%)}
-.split2{background:linear-gradient(135deg,#f6b8a8 50%,#bfe6dc 50%)}
-.split3{background:linear-gradient(135deg,#bfe6dc 50%,#f6b8a8 50%)}
-.controls{display:flex;gap:10px;align-items:center}
-.value{font-size:26px;min-width:40px;text-align:center}
-button{width:36px;height:36px;border:none;border-radius:8px;font-size:20px;background:rgba(0,0,0,.2)}
+body {
+  margin: 0;
+  background: #111;
+  font-family: -apple-system, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.card {
+  width: 92vw;
+  max-width: 420px;
+  aspect-ratio: 2 / 3;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(3, 1fr);
+  border-radius: 18px;
+  overflow: hidden;
+  border: 2px solid #000;
+}
+
+/* Cells */
+.cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  border: 1px solid rgba(0,0,0,0.25);
+  gap: 6px;
+}
+
+/* Colors */
+.white { background: #f2f2f2; }
+.red   { background: #e85b4f; }
+.green { background: #6fcf97; }
+.mint  { background: #bfe6dc; }
+.peach { background: #f6b8a8; }
+
+/* Label */
+.label {
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+button {
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  border: none;
+  font-size: 20px;
+  background: rgba(0,0,0,0.15);
+}
+
+.value {
+  font-size: 28px;
+  min-width: 40px;
+  text-align: center;
+}
 </style>
 </head>
+
 <body>
 
 <div class="card">
-<div class="cell split1"><div>◇</div><div class="controls"><button onclick="c('c',-1)">−</button><div id="c" class="value">0</div><button onclick="c('c',1)">+</button></div></div>
-<div class="cell split2"><div>BIRGI</div><div class="controls"><button onclick="c('b',-1)">−</button><div id="b" class="value">0</div><button onclick="c('b',1)">+</button></div></div>
-<div class="cell split2"><div>🔥</div><div class="controls"><button onclick="c('r',-1)">−</button><div id="r" class="value">0</div><button onclick="c('r',1)">+</button></div></div>
-<div class="cell split3"><div>TAX</div><div class="controls"><button onclick="c('t',-1)">−</button><div id="t" class="value">0</div><button onclick="c('t',1)">+</button></div></div>
-<div class="cell split3"><div>🌳</div><div class="controls"><button onclick="c('g',-1)">−</button><div id="g" class="value">0</div><button onclick="c('g',1)">+</button></div></div>
-<div class="cell split2"><div>CREATURE</div><div class="controls"><button onclick="c('x',-1)">−</button><div id="x" class="value">0</div><button onclick="c('x',1)">+</button></div></div>
+
+  <!-- Colorless -->
+  <div class="cell white">
+    <div class="label">COLORLESS</div>
+    <div class="controls">
+      <button onclick="change('c',-1)">−</button>
+      <div class="value" id="c">0</div>
+      <button onclick="change('c',1)">+</button>
+    </div>
+  </div>
+
+  <!-- Birgi Mana -->
+  <div class="cell peach">
+    <div class="label">BIRGI MANA</div>
+    <div class="controls">
+      <button onclick="change('b',-1)">−</button>
+      <div class="value" id="b">0</div>
+      <button onclick="change('b',1)">+</button>
+    </div>
+  </div>
+
+  <!-- Red Mana -->
+  <div class="cell red">
+    <div class="label">RED MANA</div>
+    <div class="controls">
+      <button onclick="change('r',-1)">−</button>
+      <div class="value" id="r">0</div>
+      <button onclick="change('r',1)">+</button>
+    </div>
+  </div>
+
+  <!-- Commander Tax -->
+  <div class="cell mint">
+    <div class="label">COMMANDER TAX</div>
+    <div class="controls">
+      <button onclick="change('t',-1)">−</button>
+      <div class="value" id="t">0</div>
+      <button onclick="change('t',1)">+</button>
+    </div>
+  </div>
+
+  <!-- Creature Mana -->
+  <div class="cell green">
+    <div class="label">CREATURE MANA</div>
+    <div class="controls">
+      <button onclick="change('g',-1)">−</button>
+      <div class="value" id="g">0</div>
+      <button onclick="change('g',1)">+</button>
+    </div>
+  </div>
+
+  <!-- Creature / Enchantment -->
+  <div class="cell peach">
+    <div class="label">CREATURE / ENCHANT</div>
+    <div class="controls">
+      <button onclick="change('x',-1)">−</button>
+      <div class="value" id="x">0</div>
+      <button onclick="change('x',1)">+</button>
+    </div>
+  </div>
+
 </div>
 
 <script>
-let k=['c','b','r','t','g','x'];
-k.forEach(i=>{let v=localStorage.getItem(i)||0;document.getElementById(i).innerText=v});
-function c(id,d){let e=document.getElementById(id);let v=parseInt(e.innerText)+d;if(v<0)v=0;e.innerText=v;localStorage.setItem(id,v)}
+const keys = ["c","b","r","t","g","x"];
+
+function load() {
+  keys.forEach(k => {
+    const v = localStorage.getItem(k) || 0;
+    document.getElementById(k).innerText = v;
+  });
+}
+
+function change(key, delta) {
+  const el = document.getElementById(key);
+  let val = parseInt(el.innerText) + delta;
+  if (val < 0) val = 0;
+  el.innerText = val;
+  localStorage.setItem(key, val);
+}
+
+load();
 </script>
 
 </body>
